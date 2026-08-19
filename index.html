@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout Mobile</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1a0033, #3b0764, #6b21a8, #4c1d95, #0f0121);
+      font-family: "Dancing Script", cursive;
+      font-size: 36px;
+    }
+    
+    p {
+      z-index: 1;
+    }
+    /* Área principal com proporção de celular */
+    .app {
+      width: min(100vw, calc(100vh * 9 / 16));
+      height: min(100vh, calc(100vw * 16 / 9));    
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 16px;
+      gap: 12px;
+      z-index: 2;
+    }
+
+    img {
+      width: min(100vw, calc(100vh * 9 / 16));
+      height: min(100vh, calc(100vw * 16 / 9));  
+      z-index: -1;
+      border-radius: 6px;
+      position: absolute;
+
+      object-fit: cover;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(3.25rem, 1vw, 3.25rem);
+    }
+    #isqueiro {
+    width: 19%;
+    height: 19%;
+    bottom: 4%;
+    left: 12%;
+    position: absolute;
+    transition: all 1s;
+    z-index: 99999;
+    }
+    #isqueiro:hover {
+    rotate: 15deg;
+    transition: all 1s;
+    }
+    #papel {
+      opacity: 0;
+      transition: all 5.5s;
+    }
+    #titulo {
+      opacity: 0;
+      transition: all 5.5s;
+    }
+    #fim {
+      opacity: 0;
+      transition: all 5.5s;
+    }
+
+    #conteudo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+
+    #texto-bloco {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #imagem-extra {
+      display: none;
+      width: 90%;
+      height: auto;
+      max-height: 70vh;
+      position: static;
+      z-index: 1;
+      object-fit: contain;
+      border-radius: 6px;
+    }
+
+    .nav-botoes {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      display: flex;
+      gap: 10px;
+      z-index: 999999;
+    }
+
+    .nav-botoes button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.85);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .nav-botoes button:hover {
+      transform: scale(1.1);
+    }
+
+    .nav-botoes button:disabled {
+      opacity: 0.35;
+      cursor: default;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <div id="conteudo">
+      <div id="texto-bloco">
+        <h1 id="titulo">Te amo
+        </h1>
+
+        <p id="papel">Ti amo, I love you, te amo, je t'aime, ich liebe dich, 愛してる, 사랑해, 我爱你, я тебя люблю, σ' αγαπώ, أحبك, ik hou van je, jag älskar dig e te amo (</p>
+
+        <h2 id="fim"><3</h2>
+      </div>
+
+      <img id="imagem-extra" src="" alt="">
+    </div>
+
+    <img src="./images/background10526880.png" alt="">
+
+    <img id="isqueiro" src="./images/isqueiro_apagado-removebg-preview.png" alt="">
+  </div>
+
+  <div class="nav-botoes">
+    <button id="btn-voltar" title="Voltar">⬅️</button>
+    <button id="btn-avancar" title="Avançar">➡️</button>
+  </div>
+
+<script>
+  const isqueiro = document.getElementById("isqueiro");
+  const papel = document.getElementById("papel")
+  const titulo = document.getElementById("titulo")
+  const fim = document.getElementById("fim")
+
+  const imgApagado = "./images/isqueiro_apagado-removebg-preview.png";
+  const imgAceso = "./images/isqueiro.png";
+
+  let timeout = null;
+
+  isqueiro.addEventListener("click", () => {
+    // evita múltiplos cliques acumularem timers
+    if (timeout) return;
+    papel.style.opacity = "1"
+    titulo.style.opacity = "1"
+    fim.style.opacity = "1"
+    isqueiro.src = imgAceso;
+
+    timeout = setTimeout(() => {
+      isqueiro.src = imgApagado;
+      isqueiro.style.opacity = "0"
+      timeout = null;
+    }, 3000);
+  });
+
+  // ---- Navegação entre o texto e as imagens ----
+  // Adicione aqui os caminhos das suas imagens, na ordem em que devem aparecer
+  const imagensExtras = [
+    "./images/img1.jpg",
+    "./images/im2.jpg",
+    "./images/img3.jpg"
+  ];
+
+  const textoBloco = document.getElementById("texto-bloco");
+  const imagemExtra = document.getElementById("imagem-extra");
+  const btnVoltar = document.getElementById("btn-voltar");
+  const btnAvancar = document.getElementById("btn-avancar");
+
+  // -1 = mostrando o texto | 0, 1, 2... = índice da imagem em imagensExtras
+  let indiceAtual = -1;
+
+  function atualizarConteudo() {
+    if (indiceAtual === -1) {
+      textoBloco.style.display = "flex";
+      imagemExtra.style.display = "none";
+    } else {
+      textoBloco.style.display = "none";
+      imagemExtra.src = imagensExtras[indiceAtual];
+      imagemExtra.style.display = "block";
+    }
+
+    btnVoltar.disabled = indiceAtual === -1;
+    btnAvancar.disabled = indiceAtual === imagensExtras.length - 1;
+  }
+
+  btnAvancar.addEventListener("click", () => {
+    if (indiceAtual < imagensExtras.length - 1) {
+      indiceAtual++;
+      atualizarConteudo();
+    }
+  });
+
+  btnVoltar.addEventListener("click", () => {
+    if (indiceAtual > -1) {
+      indiceAtual--;
+      atualizarConteudo();
+    }
+  });
+
+  atualizarConteudo();
+</script>
+
+</body>
+</html>
